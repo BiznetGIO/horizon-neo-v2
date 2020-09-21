@@ -27,7 +27,6 @@ def get_available_images(request, project_id=None, images_cache=None):
     :param images_cache: An optional dict-like object in which to
     cache public and per-project id image metadata.
     """
-
     if images_cache is None:
         images_cache = {}
     public_images = images_cache.get('public_images', [])
@@ -96,8 +95,9 @@ def get_available_images(request, project_id=None, images_cache=None):
     image_ids = []
     final_images = []
     for image in images:
+        print(image.name)
         if image.id not in image_ids and \
-                image.container_format not in ('aki', 'ari'):
+                image.container_format not in ('aki', 'ari') and not ("Plesk" in image.name):
             image_ids.append(image.id)
             final_images.append(image)
     return final_images
