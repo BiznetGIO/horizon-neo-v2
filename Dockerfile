@@ -39,7 +39,13 @@ RUN cd ${HORIZON_BASEDIR} && \
     python3 ./manage.py collectstatic --noinput && \
     python3 ./manage.py compress --force && \
     python3 ./manage.py make_web_conf --wsgi --force && \
+    python3 ./manage.py make_web_conf --apache --force > /etc/apache2/sites-available/horizon.conf && \
     python3 -m compileall $HORIZON_BASEDIR
 
-EXPOSE 8001
-CMD ["uwsgi", "--http","0.0.0.0:8001","--wsgi-file","openstack_dashboard/horizon_wsgi.py"]
+EXPOSE 80
+RUN a2ensite horizon && \
+    rm -rf /etc/apache2/sites-available/000-default.conf && \ 
+    chown -R www-data:www-data /opt/horizon/openstack_dashboard/local && \
+    chown -R www-data:www-data /var/tmp
+
+CMD ["/bin/bash", "entrypoint.sh"]
