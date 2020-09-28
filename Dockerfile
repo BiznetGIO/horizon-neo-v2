@@ -46,6 +46,7 @@ EXPOSE 80
 RUN a2ensite horizon && \
     rm -rf /etc/apache2/sites-available/000-default.conf && \ 
     chown -R www-data:www-data /opt/horizon/openstack_dashboard/local && \
-    chown -R www-data:www-data /var/tmp
+    chown -R www-data:www-data /var/tmp && \
+    ln -sf /proc/self/fd/1 /var/log/apache2/openstack_dashboard-error.log
 
 CMD ["/bin/bash", "entrypoint.sh"]
