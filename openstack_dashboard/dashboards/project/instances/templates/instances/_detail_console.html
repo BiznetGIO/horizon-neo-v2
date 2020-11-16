@@ -19,15 +19,18 @@
     } else {
         addHorizonLoadEvent(fix_height);
     }
-    
-    if(window.location.href.includes("instance_details__console")){
-        window.open('{{ console_url }}','_blank');
-        window.history.back();
-    }
 
     $(document).ready(function(){
-        window.open('{{ console_url }}','_blank');
+        var newTab = window.open();
+        newTab.location.href = "{{ console_url }}";
     });
+    
+    if(window.location.href.includes("instance_details__console")){
+        window.history.back();
+    } else {
+        $('a[data-target="#instance_details__overview"]').click();
+        window.location.reload();
+    }
 </script>
 {% else %}
   <script type="text/javascript">
